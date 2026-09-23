@@ -1,3 +1,37 @@
+# Revenue Analysis and Customer-Level Aggregation on UK E-Commerce Data
+
+**Source:** [Kaggle – E-Commerce Data](https://www.kaggle.com/datasets/carrie1/ecommerce-data)
+
+Britaniyada fəaliyyət göstərən onlayn pərakəndə şirkətin 01.12.2010 – 09.12.2011 dövrünə aid əməliyyatları. Dataset **541.909 sətir və 8 sütundan** ibarətdir.
+
+
+## Metodologiya
+
+**1. Yükləmə və ilk baxış.** Data `encoding='ISO-8859-1'` ilə oxundu, ölçüsü, sütun tipləri və boş dəyərlər yoxlanıldı. Boş dəyərlər əsasən `CustomerID` (135.080) və `Description` (1.454) sütunlarındadır. `InvoiceDate` mətn formatından tarix formatına çevrildi.
+
+**2. Ləğv edilmiş sifarişlər.** `InvoiceNo` "C" ilə başlayan sifarişlər ləğv edilmiş kimi işarələndi (`Cancelled` sütunu) və ayrıca cədvələ çıxarıldı: 9.288 sətir, 3.836 unikal sifariş.
+
+**3. Boş CustomerID.** Müştəri səviyyəsində analiz üçün `CustomerID` boş olan 135.080 sətir analizdən çıxarıldı, 406.829 sətir qaldı. `CustomerID` float formatından int formatına çevrildi.
+
+**4. İadələr (mənfi Quantity).** Mənfi miqdarlı 8.905 sətir iadə kimi ayrıca saxlanıldı. Gəlir analizi yalnız müsbət miqdarlı 397.924 satış sətri üzərində aparıldı.
+
+**5. Revenue.** `Revenue = Quantity × UnitPrice` düsturu ilə yeni sütun yaradıldı. Ümumi gəlir: **8.911.407,90 £**.
+
+**6. Müştəri səviyyəsində aqreqasiya.** Hər müştəri üçün ümumi gəlir, sifariş sayı və orta sifariş dəyəri (gəlir / sifariş sayı) hesablandı. Bir sifariş bir neçə sətirdən (məhsuldan) ibarət ola bildiyi üçün sifarişlər sətir sayı ilə yox, unikal `InvoiceNo` sayı ilə hesablandı. Cəmi 4.339 müştəri var, müştəri üzrə orta sifariş dəyəri 419,05 £-dir.
+
+**7. Ölkə səviyyəsində aqreqasiya.** Hər ölkə üçün ümumi gəlir, sifariş sayı və ümumi gəlirdəki faiz payı hesablandı.
+
+**8. Aylıq trend.** `InvoiceDate`-dən il-ay sütunu (`YearMonth`) çıxarıldı və aylar üzrə gəlir toplandı. İl-ay istifadə olundu ki, 2010 və 2011 dekabrları qarışmasın.
+
+**9. Top 20 məhsul.** Məhsullar ümumi satılan miqdara görə sıralandı.
+
+**10. Return rate.** Ölkə üzrə ləğv nisbəti həm satışları, həm ləğvləri özündə saxlayan data üzərində hesablandı: ləğv edilmiş unikal sifarişlər / bütün unikal sifarişlər × 100. Ümumi ləğv nisbəti (16,47%) hədd kimi götürüldü və bundan yüksək olan ölkələr "yüksək iadəli bazar" kimi işarələndi (`HighReturn`).
+
+**Bonus 1.** Gəlirə görə top 10 müştərinin aylıq xərcləmələri pivot table ilə hesablandı və xətt qrafiki quruldu.
+
+**Bonus 2.** Basket size hər sifarişdəki unikal məhsul (`StockCode`) sayı kimi hesablandı, sonra ölkələr üzrə ortalaması götürüldü. Ümumi orta basket size: 20,93.
+
+
 ## 5 Biznes Insight
 
 ### 1. Şirkət demək olar ki, tamamilə Britaniya bazarından asılıdır
